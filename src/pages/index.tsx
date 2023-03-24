@@ -22,7 +22,7 @@ export default function Home({ link }: PoapLink) {
         <title>POAP Randomizer</title>
         <meta name="description" content="POAP Randomizer" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        {link && <meta http-equiv="refresh" content={`1; URL=${link}`} />}
+        {/* {link && <meta http-equiv="refresh" content={`1; URL=${link}`} />} */}
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
@@ -35,27 +35,28 @@ export default function Home({ link }: PoapLink) {
 export async function getServerSideProps() {
   const prisma = new PrismaClient();
 
+  const length  = (await prisma.poap.findMany({ where: { claimed: false }})).length
+
+  // when everything is claimed
+  if(length === 0) {
+    await prisma.poap.updateMany({
+      where: { claimed: true },
+      data: { claimed: false }
+    })
+  } 
+
   const links  = await prisma.poap.findMany({ where: { claimed: false }})
+  const idx = Math.floor(Math.random() * (links.length))
+  const randomLink = links[idx]
 
-  const length = links.length
-  const randomIndex = Math.floor(Math.random() * (length + 1))
-
-  const randomLink = links[randomIndex]
-
-  const updatedlink = await prisma.poap.update({
-    where: {
-      id: randomLink.id
-    },
-    data: {
-      claimed: true
-    }
+  const { link } = await prisma.poap.update({
+    where: { id: randomLink.id},
+    data: { claimed: true }
   })
-
-  console.log(updatedlink)
 
   return {
     props: {
-      link: updatedlink.link
+      link
     },
   }
 }
