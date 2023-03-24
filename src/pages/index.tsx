@@ -1,7 +1,4 @@
 import Head from 'next/head'
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
-import styles from '@/styles/Home.module.css'
 
 import { PrismaClient } from "@prisma/client";
 
@@ -22,10 +19,10 @@ export default function Home({ link }: PoapLink) {
         <title>POAP Randomizer</title>
         <meta name="description" content="POAP Randomizer" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        {/* {link && <meta http-equiv="refresh" content={`1; URL=${link}`} />} */}
+        {link && <meta httpEquiv="refresh" content={`1; URL=${link}`} />}
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={styles.main}>
+      <main style={{ backgroundColor: 'black', textAlign: 'center', color: 'white', fontSize: '2rem' }}>
         {!link && `No more links to claim`}
       </main>
     </>
