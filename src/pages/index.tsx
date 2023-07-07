@@ -8,10 +8,6 @@ type PoapLink = {
   claimed: Boolean
 }
 
-type Links = {
-  links: PoapLink[]
-}
-
 export default function Home({ link }: PoapLink) {
   return (
     <>
@@ -47,13 +43,9 @@ export async function getServerSideProps() {
   const randomLink = links[idx]
 
   const { link } = await prisma.poap.update({
-    where: { id: randomLink.id},
+    where: { id: randomLink.id },
     data: { claimed: true }
   })
 
-  return {
-    props: {
-      link
-    },
-  }
+  return { props: { link } }
 }
