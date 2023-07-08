@@ -30,8 +30,8 @@ export async function getServerSideProps() {
 
   const length  = (await prisma.poap.findMany({ where: { claimed: false }})).length
 
-  // when everything is claimed
-  if(length === 0) {
+  // when everything has been claimed, reset
+  if (length === 0) {
     await prisma.poap.updateMany({
       where: { claimed: true },
       data: { claimed: false }
@@ -39,11 +39,11 @@ export async function getServerSideProps() {
   } 
 
   const links  = await prisma.poap.findMany({ where: { claimed: false }})
-  const idx = Math.floor(Math.random() * (links.length))
-  const randomLink = links[idx]
+  const index = Math.floor(Math.random() * (links.length))
+  const selected_link = links[index]
 
   const { link } = await prisma.poap.update({
-    where: { id: randomLink.id },
+    where: { id: selected_link.id },
     data: { claimed: true }
   })
 
