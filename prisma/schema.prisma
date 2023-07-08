@@ -8,7 +8,7 @@ datasource db {
 }
 
 model poap {
-  id        String    @id @default(auto()) @map("_id") @db.ObjectId
-  link      String
-  claimed   Boolean   @default(false)
+  id      String  @id @default(auto()) @map("_id") @db.ObjectId
+  link    String  @unique
+  claimed Boolean @default(false)
 }

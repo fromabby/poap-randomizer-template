@@ -5,7 +5,10 @@ const handler = async (_, res) => {
   const prisma = new PrismaClient()
   try {
     if (process.env.NODE_ENV === 'development') {
-      await prisma.poap.createMany({ data: LINKS.poap_links })
+      const modified_links = LINKS.poap_links.map(link => ({
+        link
+      }))
+      await prisma.poap.createMany({ data: modified_links })
       const length = LINKS.poap_links.length
 
       return res.status(200).json({
