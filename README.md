@@ -1,4 +1,4 @@
-# POAP links Randomizer
+# POAP Links Randomizer
 
 ## What is a POAP?
 A POAP, or proof of attendance protocol, is a blockchain-enabled digital souvenir designed to commemorate important events
