@@ -29,17 +29,16 @@ export async function getServerSideProps() {
   const prisma = new PrismaClient();
 
   // check if there are links
-  const dbLinks  = await prisma.poap.findMany()
-  const hasLinks  = !!dbLinks.length
+  const db_links_count = await prisma.poap.count()
 
-  if (!hasLinks) {
+  if (db_links_count === 0) {
     return { props: { link: '' } }
   }
 
-  const length  = (dbLinks.filter(({ claimed }) => claimed === false)).length
+  const unclaimed_links_count  = await prisma.poap.count({ where: { claimed: false } })
 
   // when everything has been claimed, reset
-  if (length === 0) {
+  if (unclaimed_links_count === 0) {
     await prisma.poap.updateMany({
       where: { claimed: true },
       data: { claimed: false }
