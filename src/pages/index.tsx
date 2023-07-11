@@ -30,7 +30,7 @@ export async function getServerSideProps() {
 
   // check if there are links
   const dbLinks  = await prisma.poap.findMany()
-  const hasLinks  = !!(await prisma.poap.findMany()).length
+  const hasLinks  = !!dbLinks.length
 
   if (!hasLinks) {
     return { props: { link: '' } }
