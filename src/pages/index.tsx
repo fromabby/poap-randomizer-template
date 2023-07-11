@@ -19,7 +19,7 @@ export default function Home({ link }: PoapLink) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main style={{ backgroundColor: 'black', textAlign: 'center', color: 'white', fontSize: '2rem' }}>
-        {!link && `No more links to claim`}
+        {!link && `Claimable link unavailable`}
       </main>
     </>
   )
@@ -28,7 +28,15 @@ export default function Home({ link }: PoapLink) {
 export async function getServerSideProps() {
   const prisma = new PrismaClient();
 
-  const length  = (await prisma.poap.findMany({ where: { claimed: false }})).length
+  // check if there are links
+  const dbLinks  = await prisma.poap.findMany()
+  const hasLinks  = !!(await prisma.poap.findMany()).length
+
+  if (!hasLinks) {
+    return { props: { link: '' } }
+  }
+
+  const length  = (dbLinks.filter(({ claimed }) => claimed === false)).length
 
   // when everything has been claimed, reset
   if (length === 0) {
