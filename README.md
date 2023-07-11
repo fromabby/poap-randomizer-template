@@ -14,14 +14,18 @@ When all the links are claimed, a request to toggle all `claimed: true` records 
 
 ### Populate the database
 
-1. Branch out from `main`.
+1. Clone the repository and run `npm install`
 2. Add an `.env` file in the root folder.
    - Add `DATABASE_URL` generated from MongoDB
-   - Format: `mongodb+srv://<USERNAME>:<PASSWORD>@<CLUSTER>.wgsus.mongodb.net/<DATABASE_NAME>`
+   - Format: `DATABASE_URL="mongodb+srv://<USERNAME>:<PASSWORD>@<CLUSTER>.wgsus.mongodb.net/<DATABASE_NAME>"`
 3. Go to `src/links.json` and add your list of links.
    > Eg. ["link_1", "link_2", "link_3", ...other_links]
-4. In the terminal, run `npm run dev` to be in development mode
+4. In the terminal, run `npm run dev` to be in development mode.
 5. In the browser or any API client, send request to `localhost:3000/api/add`.
    > Each link should be unique.
    >
    > A response of `success: true` means that the links are successfully inserted into the database and the webapp is now available to use.
+
+> You can also delete a link using an API client (like Postman or Insomnia)
+>
+> /DELETE: localhost:3000/api/delete?link={link_to_delete}
